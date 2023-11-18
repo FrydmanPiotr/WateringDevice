@@ -1,3 +1,8 @@
+"""
+Nazwa projektu: WateringDevice
+Autor: Piotr Frydman
+Opis: Projekt urządzenia do automatycznego nawadniania roślin
+"""
 import tkinter as tk
 from tkinter import ttk
 from dhtRead import dhtRead
