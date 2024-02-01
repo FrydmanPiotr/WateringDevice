@@ -1,11 +1,7 @@
-"""
-Nazwa projektu: WateringDevice
-Autor: Piotr Frydman
-Opis: Projekt urządzenia do automatycznego nawadniania roślin
-"""
 import tkinter as tk
 from tkinter import ttk
 from dhtRead import dhtRead
+from atmegaSerial import atmegaSerial
 
 class WateringDevice(tk.Tk):
     def __init__(self):
@@ -17,7 +13,8 @@ class WateringDevice(tk.Tk):
         self.columnconfigure(0,weight=1)
         self.columnconfigure(1,weight=1)
         self.rowconfigure(0, weight=3)
-        self.rowconfigure(1, weight=3)       
+        self.rowconfigure(1, weight=3)
+        self.rowconfigure(2, weight=3)
         self.create_widgets()
         self.update_data()
     
@@ -29,11 +26,14 @@ class WateringDevice(tk.Tk):
         self.temperature = tk.Label(self,
                     text=f"Temperatura powietrza: ")
         self.temperature.grid(row=1,column=0)
+        self.readValues = tk.Label(self, text=f"{rv}")
+        self.readValues.grid(row=2,column=0)
 
     def update_data(self):
         humidity, temperature = dhtRead()
         self.airHumidity.config(text=f"Wilgotność powietrza: {humidity} %")
         self.temperature.config(text=f"Temperatura powietrza: {temperature} *C")
+        self.readValues.config(text=f"Temperatura powietrza: {temperature} *C")
         
         self.after(1000, self.update_data)
 
