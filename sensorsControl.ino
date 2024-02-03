@@ -38,7 +38,7 @@ void loop() {
   }
   else {
   //wysyłanie danych do Raspberry Pi
-  Serial.println(String(waterLevel) + " " + String(soilHum));
+  Serial.println(String(soilHum) + " " + String(waterLevel));
   } 
 }
 
