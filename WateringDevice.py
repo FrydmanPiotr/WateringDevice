@@ -1,7 +1,8 @@
 """
 Nazwa projektu: WateringDevice
 Autor: Piotr Frydman
-Opis: Projekt urządzenia do automatycznego nawadniania roślin
+Opis: Projekt urządzenia do automatycznego nawadniania roślin.
+      Okno główne aplikacji.
 """
 
 import tkinter as tk
@@ -44,7 +45,7 @@ class WateringDevice(tk.Tk):
         sensors = atmegaSerial()
         self.airHumidity.config(text=f"Wilgotność powietrza: {humidity} %")
         self.temperature.config(text=f"Temperatura powietrza: {temperature} *C")
-        self.readValues.config(text=f"Wilgotność gleby[1]: {sensors[0]}%\n"\
+        self.readValues.config(text=f"Wilgotność gleby(1): {sensors[0]}%\n"\
 			f"Ilość wody: {sensors[1]}")
         
         self.after(1000, self.update_data)
