@@ -7,8 +7,8 @@ Opis: Projekt urządzenia do automatycznego nawadniania roślin.
 
 import tkinter as tk
 from tkinter import ttk
-#from dhtRead import dhtRead
-#from atmegaSerial import atmegaSerial
+from dhtRead import dhtRead
+from atmegaSerial import atmegaSerial
 
 class WateringDevice(tk.Tk):
     def __init__(self):
