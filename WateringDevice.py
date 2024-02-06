@@ -37,6 +37,43 @@ class WateringDevice(tk.Tk):
         self.readValues = tk.Label(self, text="Wilgotność gleby[1]: 0%\n"\
                                    "Ilość wody: 0%")
         self.readValues.grid(row=2,column=0)
+        
+        self.saveCsv = tk.Button(self, text="Zapis danych",
+                                 command=self.save_data)
+        self.saveCsv.grid(row=0,column=1)
+
+    def save_data(self):
+        #ustawienia zapisu odczytów
+        save_win = tk.Toplevel()
+        save_win.title("Zapis danych")
+        save_win.geometry('300x200')
+        save_win.focus()
+
+        #rozmieszczenie elementów
+        self.columnconfigure(0,weight=2)
+        self.columnconfigure(1,weight=2)
+        self.rowconfigure(0, weight=3)
+        self.rowconfigure(1, weight=3)
+        self.rowconfigure(2, weight=3)
+
+        #częstotliwość zapisu odczytów
+        vlist = ["1 min", "10 min", "30 min", "1 godz"]
+ 
+        csv = ttk.Combobox(save_win, values = vlist, state="readonly")
+        csv.set("Częstotliwość zapisu")
+        csv.grid(row=0,column=1)
+
+        ttk.Label(save_win, text="CSV").grid(row=0,column=0)
+        ttk.Label(save_win, text="SQL").grid(row=1,column=0)
+        
+        sql = ttk.Combobox(save_win, values = vlist, state="readonly")
+        sql.set("Częstotliwość zapisu")
+        sql.grid(row=1,column=1)
+        
+        save = ttk.Button(save_win, text="OK", command=save_win.destroy)
+        close = ttk.Button(save_win, text="Anuluj", command=save_win.destroy)
+        save.grid(row=2,column=0)
+        close.grid(row=2,column=1)
 
     def update_data(self):
         #pobieranie odczytów z czujnika DHT11
