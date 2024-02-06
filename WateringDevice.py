@@ -23,7 +23,7 @@ class WateringDevice(tk.Tk):
         self.rowconfigure(1, weight=3)
         self.rowconfigure(2, weight=3)
         self.create_widgets()
-        #self.update_data()
+        self.update_data()
     
     def create_widgets(self):
         self.airHumidity = tk.Label(self,
