@@ -86,6 +86,6 @@ class WateringDevice(tk.Tk):
 			f"Ilość wody: {sensors[1]}")
         
         self.after(1000, self.update_data)
-
-menu = WateringDevice()
-menu.mainloop()
+if __name__=="__main__":    
+	menu = WateringDevice()
+	menu.mainloop()
