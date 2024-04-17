@@ -1,8 +1,6 @@
 """
-Nazwa projektu: WateringDevice
-Autor: Piotr Frydman
-Opis: Projekt urządzenia do automatycznego nawadniania roślin.
-      Okno główne aplikacji.
+Title: WateringDevice
+Author: Piotr Frydman
 """
 
 import tkinter as tk
@@ -13,79 +11,46 @@ from atmegaSerial import atmegaSerial
 class WateringDevice(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Nawadnianie roślin")
+        self.title("Plants irrigation")
         self.geometry("600x400")
-        
-        #rozmieszczenie widgetów
-        self.columnconfigure(0,weight=1)
-        self.columnconfigure(1,weight=1)
-        self.rowconfigure(0, weight=3)
-        self.rowconfigure(1, weight=3)
-        self.rowconfigure(2, weight=3)
-        self.create_widgets()
-        self.update_data()
+        #self.update_data()
+        self.load_menu()
     
-    def create_widgets(self):
-        self.airHumidity = tk.Label(self,
-                        text=f"Wilgotność powietrza: ")
-        self.airHumidity.grid(row=0,column=0)
-    
-        self.temperature = tk.Label(self,
-                    text=f"Temperatura powietrza: ")
-        self.temperature.grid(row=1,column=0)
+    def load_menu(self):
+        airHum = tk.Label(self, text=f"Air humidity: ").place(x=20,y=20)
+        airTemper = tk.Label(self, text=f"Air temperature: ").place(x=20,y=60)
+        soilHum =tk.Label(self, text="Soil humidity [1]: 0 %").place(x=20,y=100)
+        waterLev = tk.Label(self, text="Water level: 0 %").place(x=20,y=140)
         
-        self.readValues = tk.Label(self, text="Wilgotność gleby[1]: 0%\n"\
-                                   "Ilość wody: 0%")
-        self.readValues.grid(row=2,column=0)
-        
-        self.saveCsv = tk.Button(self, text="Zapis danych",
-                                 command=self.save_data)
-        self.saveCsv.grid(row=0,column=1)
+        tk.Button(self, text="Saving data",bd=3,
+            command=self.save_data).place(x=20,y=180)
 
     def save_data(self):
-        #ustawienia zapisu odczytów
         save_win = tk.Toplevel()
-        save_win.title("Zapis danych")
-        save_win.geometry('300x200')
+        save_win.title("Saving data")
+        save_win.geometry('220x100+500+250')
         save_win.focus()
 
-        #rozmieszczenie elementów
-        self.columnconfigure(0,weight=2)
-        self.columnconfigure(1,weight=2)
-        self.rowconfigure(0, weight=3)
-        self.rowconfigure(1, weight=3)
-        self.rowconfigure(2, weight=3)
-
-        #częstotliwość zapisu odczytów
-        vlist = ["1 min", "10 min", "30 min", "1 godz"]
- 
-        csv = ttk.Combobox(save_win, values = vlist, state="readonly")
-        csv.set("Częstotliwość zapisu")
-        csv.grid(row=0,column=1)
-
-        ttk.Label(save_win, text="CSV").grid(row=0,column=0)
-        ttk.Label(save_win, text="SQL").grid(row=1,column=0)
-        
-        sql = ttk.Combobox(save_win, values = vlist, state="readonly")
-        sql.set("Częstotliwość zapisu")
-        sql.grid(row=1,column=1)
-        
-        save = ttk.Button(save_win, text="OK", command=save_win.destroy)
-        close = ttk.Button(save_win, text="Anuluj", command=save_win.destroy)
-        save.grid(row=2,column=0)
-        close.grid(row=2,column=1)
+        ttk.Label(save_win, text="CSV").place(x=10,y=30)
+        #save frequency settings
+        csv = ttk.Spinbox(save_win, from_=1,to=10)
+        #csv.set("Recording frequency")
+        csv.place(x=40,y=30)
+        ttk.Button(save_win, text="OK").place(x=40,y=60)
+        ttk.Button(save_win, text="Cancel",
+                   command=save_win.destroy).place(x=120,y=60)
 
     def update_data(self):
-        #pobieranie odczytów z czujnika DHT11
+        #fetch data from DHT11 sensor
         humidity, temperature = dhtRead()
-	#odbieranie odczytów z czujników (Atmega)
+	#communicate with Atmega
         sensors = atmegaSerial()
-        self.airHumidity.config(text=f"Wilgotność powietrza: {humidity} %")
-        self.temperature.config(text=f"Temperatura powietrza: {temperature} *C")
-        self.readValues.config(text=f"Wilgotność gleby(1): {sensors[0]}%\n"\
-			f"Ilość wody: {sensors[1]}")
-        
+        self.airHum.config(text=f"Air humidity: {humidity} %")
+        self.airTemper.config(text=f"Air temperature: {temperature} *C")
+        self.soilHum.config(text=f"Wilgotność gleby(1): {sensors[0]} %")
+	self.waterLev.config(text=f"Ilość wody: {sensors[1]}")
         self.after(1000, self.update_data)
-if __name__=="__main__":    
-	menu = WateringDevice()
-	menu.mainloop()
+
+if __name__=="__main__":
+    menu = WateringDevice()
+    menu.mainloop()

@@ -1,5 +1,3 @@
-"Odczyt wilgotności i temperatury powietrza"
-
 import Adafruit_DHT
 
 sensor_pin = 4
